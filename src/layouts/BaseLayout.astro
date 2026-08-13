@@ -1,0 +1,71 @@
+---
+// Moldura base de todas as páginas: <head>, fontes auto-hospedadas, dark/light
+// mode, e slot para o conteúdo. Na Fase 1 o header/footer e o botão de tema
+// passam a componentes próprios; por agora fica um toggle mínimo para validar
+// que os dois modos funcionam.
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Lucas Jardim',
+  description = 'Personal site and portfolio of Lucas Jardim.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    {/* Aplica o tema antes do primeiro paint para evitar flash de tema errado. */}
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-screen antialiased">
+    <main class="mx-auto max-w-3xl px-6 py-16">
+      <slot />
+    </main>
+
+    {/* Toggle de tema mínimo (provisório, Fase 0). */}
+    <button
+      id="theme-toggle"
+      type="button"
+      aria-label="Toggle colour theme"
+      class="fixed bottom-6 right-6 rounded-control border border-border bg-surface px-3 py-2 text-sm text-content-secondary transition hover:text-content"
+    >
+      Theme
+    </button>
+
+    <script is:inline>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const root = document.documentElement;
+        root.classList.toggle('dark');
+        localStorage.setItem(
+          'theme',
+          root.classList.contains('dark') ? 'dark' : 'light'
+        );
+      });
+    </script>
+  </body>
+</html>
