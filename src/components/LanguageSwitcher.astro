@@ -1,0 +1,40 @@
+---
+// Seletor de idioma compacto (EN / PT), com o idioma atual em destaque.
+// Preserva o caminho relativo: /pt/projects ↔ /en/projects.
+import { languages, type Lang, t } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Deriva o caminho sem o prefixo de idioma para gerar o link equivalente.
+// Ex.: /pt/projects → 'projects'; /en/ → ''.
+const pathname = Astro.url.pathname;
+const stripped = pathname.replace(/^\/(en|pt)\/?/, '');
+---
+
+<nav
+  aria-label={t(lang, 'language.switch')}
+  class="flex items-center gap-1 font-mono text-xs uppercase tracking-wider"
+>
+  {
+    languages.map((code, i) => (
+      <>
+        {i > 0 && <span class="text-content-muted" aria-hidden="true">/</span>}
+        <a
+          href={`/${code}/${stripped}`}
+          aria-current={code === lang ? 'true' : undefined}
+          class:list={[
+            'rounded-control px-1.5 py-1 transition',
+            code === lang
+              ? 'text-content'
+              : 'text-content-muted hover:text-content',
+          ]}
+        >
+          {code}
+        </a>
+      </>
+    ))
+  }
+</nav>

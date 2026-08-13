@@ -1,0 +1,59 @@
+---
+// Botão de alternância de tema. Lê o texto acessível do dicionário do idioma
+// atual. O estado inicial é aplicado pelo script anti-flash no <head>; este
+// botão apenas comuta a classe .dark e persiste a escolha em localStorage.
+import { t, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label={t(lang, 'theme.toggle')}
+  class="grid h-9 w-9 place-items-center rounded-control border border-border text-content-secondary transition hover:border-content hover:text-content"
+>
+  {/* Ícone sol (visível no tema escuro) */}
+  <svg
+    class="hidden h-4 w-4 dark:block"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+    ></path>
+  </svg>
+  {/* Ícone lua (visível no tema claro) */}
+  <svg
+    class="block h-4 w-4 dark:hidden"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<script is:inline>
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    root.classList.toggle('dark');
+    localStorage.setItem(
+      'theme',
+      root.classList.contains('dark') ? 'dark' : 'light'
+    );
+  });
+</script>

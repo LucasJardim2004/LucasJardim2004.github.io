@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "certificates": "Certificates",
+    "contact": "Contact",
+    "downloadCv": "Download CV"
+  },
+  "footer": {
+    "builtWith": "Built with Astro, hosted on GitHub Pages.",
+    "viewSource": "View source"
+  },
+  "theme": {
+    "toggle": "Toggle colour theme",
+    "light": "Switch to light theme",
+    "dark": "Switch to dark theme"
+  },
+  "language": {
+    "switch": "Switch language"
+  },
+  "home": {
+    "eyebrow": "Work in progress",
+    "heading": "Lucas Jardim",
+    "intro": "Personal site and portfolio. The foundations are in place — projects, certificates, contact and CV are on the way."
+  },
+  "pages": {
+    "projects": {
+      "title": "Projects",
+      "placeholder": "The projects section is coming in the next phase."
+    },
+    "certificates": {
+      "title": "Certificates",
+      "placeholder": "The certificates section is coming later."
+    },
+    "contact": {
+      "title": "Contact",
+      "placeholder": "Contact details are coming later."
+    }
+  }
+}

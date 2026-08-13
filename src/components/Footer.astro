@@ -1,0 +1,26 @@
+---
+// Footer discreto: uma linha de contexto, um link para o repositório.
+// Os contactos/redes entram aqui na Fase 4.
+import { t, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-border">
+  <div
+    class="mx-auto flex max-w-3xl flex-col items-start justify-between gap-2 px-6 py-8 text-sm text-content-secondary sm:flex-row sm:items-center"
+  >
+    <p>© {year} Lucas Jardim · {t(lang, 'footer.builtWith')}</p>
+    <a
+      href="https://github.com/LucasJardim2004/LucasJardim2004.github.io"
+      class="transition hover:text-content"
+    >
+      {t(lang, 'footer.viewSource')}
+    </a>
+  </div>
+</footer>

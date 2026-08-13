@@ -1,28 +1,26 @@
 ---
-// Página mínima da Fase 0. Existe para provar que o pipeline funciona:
-// commit → build → publicado. Na Fase 1 a raiz passa a encaminhar para o
-// idioma por omissão (/en/) e esta página dá lugar à estrutura bilingue.
-import BaseLayout from '../layouts/BaseLayout.astro';
+// A raiz encaminha para o idioma por omissão (inglês). Como o site é 100%
+// estático, o redirect é feito no cliente (meta refresh + JS de fallback).
+// Nenhuma página fica órfã sem prefixo de idioma.
+import { defaultLang } from '../i18n/utils';
+
+const target = `/${defaultLang}/`;
 ---
 
-<BaseLayout title="Lucas Jardim">
-  <p class="mb-6 font-mono text-sm text-content-muted">Work in progress</p>
-
-  <h1 class="mb-4 font-serif text-5xl font-medium tracking-tight">
-    Lucas Jardim
-  </h1>
-
-  <p class="mb-8 max-w-prose text-lg text-content-secondary">
-    Personal site and portfolio. The foundations are in place — projects,
-    certificates, contact and CV are on the way.
-  </p>
-
-  <p class="text-content-secondary">
-    Built with Astro, deployed on GitHub Pages. See the
-    <a
-      href="https://github.com/LucasJardim2004/LucasJardim2004.github.io"
-      class="text-accent underline-offset-4 transition hover:text-accent-hover hover:underline"
-      >repository</a
-    > for how it works.
-  </p>
-</BaseLayout>
+<!doctype html>
+<html lang={defaultLang}>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lucas Jardim</title>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirecting to <a href={target}>{target}</a>…
+    </p>
+  </body>
+</html>

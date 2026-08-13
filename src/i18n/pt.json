@@ -1,0 +1,39 @@
+{
+  "nav": {
+    "projects": "Projetos",
+    "certificates": "Certificados",
+    "contact": "Contactos",
+    "downloadCv": "Descarregar CV"
+  },
+  "footer": {
+    "builtWith": "Feito com Astro, alojado no GitHub Pages.",
+    "viewSource": "Ver código-fonte"
+  },
+  "theme": {
+    "toggle": "Alternar tema",
+    "light": "Mudar para tema claro",
+    "dark": "Mudar para tema escuro"
+  },
+  "language": {
+    "switch": "Mudar idioma"
+  },
+  "home": {
+    "eyebrow": "Em construção",
+    "heading": "Lucas Jardim",
+    "intro": "Site pessoal e portefólio. As fundações estão prontas — projetos, certificados, contactos e CV vêm a seguir."
+  },
+  "pages": {
+    "projects": {
+      "title": "Projetos",
+      "placeholder": "A secção de projetos chega na próxima fase."
+    },
+    "certificates": {
+      "title": "Certificados",
+      "placeholder": "A secção de certificados chega mais tarde."
+    },
+    "contact": {
+      "title": "Contactos",
+      "placeholder": "Os contactos chegam mais tarde."
+    }
+  }
+}
