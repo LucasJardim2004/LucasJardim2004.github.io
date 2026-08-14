@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { languages, t, type Lang } from '../../i18n/utils';
+import { languages, t, isLang, type Lang } from '../../i18n/utils';
 
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
 }
 
-const { lang } = Astro.params as { lang: Lang };
+const rawLang = Astro.params.lang;
+const lang: Lang = isLang(rawLang) ? rawLang : 'en';
 ---
 
 <BaseLayout lang={lang} title={t(lang, 'pages.contact.title')}>

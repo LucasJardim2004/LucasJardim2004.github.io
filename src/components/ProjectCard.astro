@@ -1,0 +1,81 @@
+---
+// Card de projecto para a listagem.
+// Astro 5: usa entry.id ("en/nome/index.mdx") para extrair o slug.
+// Capa opcional: sem imagem, mostra um bloco tipográfico sóbrio com o título.
+import { Image } from 'astro:assets';
+import { localizedPath, type Lang } from '../i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const { title, summary, tags, cover, coverAlt, date, type } = project.data;
+
+const slug = project.id.replace('/index.mdx', '').split('/').slice(1).join('/');
+const href = localizedPath(lang, `projects/${slug}`);
+const year = date.getFullYear();
+---
+
+<article class="group relative">
+  <a
+    href={href}
+    class="block overflow-hidden rounded-card border border-border bg-surface transition duration-150 hover:border-content-secondary"
+    aria-label={title}
+  >
+    {/* Capa: imagem se existir, senão bloco tipográfico */}
+    <div class="aspect-[1200/630] w-full overflow-hidden">
+      {
+        cover ? (
+          <Image
+            src={cover}
+            alt={coverAlt ?? title}
+            width={800}
+            height={420}
+            class="h-full w-full object-cover transition duration-150 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+        ) : (
+          <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-accent-soft px-6 text-center">
+            <span class="font-mono text-xs uppercase tracking-wider text-accent">
+              {type}
+            </span>
+            <span class="font-serif text-2xl font-medium leading-tight text-accent">
+              {title}
+            </span>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="p-6">
+      <div class="mb-3 flex flex-wrap items-center gap-2">
+        <span class="font-mono text-xs text-content-muted">{year}</span>
+        {
+          tags.slice(0, 3).map((tag) => (
+            <span class="rounded-full bg-accent-soft px-2.5 py-0.5 font-mono text-xs text-accent">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      <h2 class="mb-2 font-serif text-xl font-medium leading-snug text-content">
+        {title}
+      </h2>
+
+      <p class="line-clamp-2 text-sm leading-relaxed text-content-secondary">
+        {summary}
+      </p>
+
+      <span
+        class="mt-4 inline-block text-sm text-accent transition duration-150 group-hover:translate-x-1"
+        aria-hidden="true"
+      >
+        →
+      </span>
+    </div>
+  </a>
+</article>

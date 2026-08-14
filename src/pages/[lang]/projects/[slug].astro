@@ -1,0 +1,29 @@
+---
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { isLang, type Lang } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+
+  return allProjects.map((project) => {
+    // id: "en/personal-site/index.mdx" → lang="en", slug="personal-site"
+    const parts = project.id.replace('/index.mdx', '').split('/');
+    const lang = parts[0] as Lang;
+    const slug = parts.slice(1).join('/');
+    return {
+      params: { lang, slug },
+      props: { project },
+    };
+  });
+}
+
+const rawLang = Astro.params.lang;
+const lang: Lang = isLang(rawLang) ? rawLang : 'en';
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<ProjectLayout project={project} lang={lang}>
+  <Content />
+</ProjectLayout>

@@ -1,0 +1,125 @@
+---
+// Moldura da página de detalhe de projecto. Capa opcional, metadados, botões
+// condicionais, galeria (só quando há imagens), corpo MDX, e volta à listagem.
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import ProjectGallery from '../components/ProjectGallery.astro';
+import { t, localizedPath, type Lang } from '../i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const { title, summary, tags, cover, coverAlt, gallery, date, type, status, repo, demo } =
+  project.data;
+
+const formattedDate = date.toLocaleDateString(lang === 'pt' ? 'pt-PT' : 'en-GB', {
+  year: 'numeric',
+  month: 'long',
+});
+---
+
+<BaseLayout lang={lang} title={`${title} — Lucas Jardim`} description={summary}>
+  <nav class="mb-10" aria-label="Breadcrumb">
+    <a
+      href={localizedPath(lang, 'projects')}
+      class="inline-flex items-center gap-1 text-sm text-content-secondary transition hover:text-content"
+    >
+      <span aria-hidden="true">←</span>
+      {t(lang, 'nav.projects')}
+    </a>
+  </nav>
+
+  <article>
+    <header class="mb-10">
+      <div class="mb-4 flex flex-wrap items-center gap-2">
+        <span class="font-mono text-xs uppercase tracking-wider text-content-muted">
+          {type} · {status}
+        </span>
+        <time datetime={date.toISOString()} class="font-mono text-xs text-content-muted">
+          · {formattedDate}
+        </time>
+      </div>
+
+      <h1 class="mb-4 font-serif text-4xl font-medium leading-tight tracking-tight text-content sm:text-5xl">
+        {title}
+      </h1>
+
+      <p class="mb-4 text-lg text-content-secondary">{summary}</p>
+
+      <div class="flex flex-wrap gap-2">
+        {
+          tags.map((tag) => (
+            <span class="rounded-full bg-accent-soft px-2.5 py-0.5 font-mono text-xs text-accent">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      {
+        (repo || demo) && (
+          <div class="mt-6 flex flex-wrap gap-3">
+            {repo && (
+              <a
+                href={repo}
+                class="rounded-control border border-accent px-4 py-2 text-sm text-accent transition hover:bg-accent-soft"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {lang === 'pt' ? 'Ver código' : 'View code'} ↗
+              </a>
+            )}
+            {demo && (
+              <a
+                href={demo}
+                class="rounded-control bg-accent px-4 py-2 text-sm text-white transition hover:bg-accent-hover"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {lang === 'pt' ? 'Ver demo' : 'Live demo'} ↗
+              </a>
+            )}
+          </div>
+        )
+      }
+    </header>
+
+    {/* Capa a largura total, só se existir */}
+    {
+      cover && (
+        <div class="mb-12 overflow-hidden rounded-card border border-border">
+          <Image
+            src={cover}
+            alt={coverAlt ?? title}
+            width={1200}
+            height={630}
+            class="w-full object-cover"
+            loading="eager"
+          />
+        </div>
+      )
+    }
+
+    {/* Corpo MDX */}
+    <div
+      class="prose prose-neutral max-w-none
+        prose-headings:font-serif prose-headings:font-medium prose-headings:tracking-tight prose-headings:text-content
+        prose-p:text-content-secondary prose-p:leading-relaxed
+        prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+        prose-code:font-mono prose-code:text-sm prose-code:text-content
+        prose-pre:rounded-card prose-pre:border prose-pre:border-border prose-pre:bg-surface
+        prose-strong:text-content prose-strong:font-medium
+        prose-li:text-content-secondary
+        dark:prose-invert"
+    >
+      <slot />
+    </div>
+
+    {/* Galeria de imagens — só aparece quando há imagens */}
+    {gallery && gallery.length > 0 && <ProjectGallery images={gallery} lang={lang} />}
+  </article>
+</BaseLayout>

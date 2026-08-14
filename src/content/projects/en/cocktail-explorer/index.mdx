@@ -1,0 +1,57 @@
+---
+title: "Cocktail Explorer"
+summary: "Web app that finds cocktail recipes through random discovery or a multi-filter search, combining several API endpoints server-side."
+date: 2025-09-01
+type: "Web app"
+status: "Completed"
+tags: ["Node.js", "Express", "EJS", "Axios", "Bootstrap 5", "REST API"]
+# Imagens partilhadas entre EN e PT — ficam em shared/cocktail-explorer/
+# Descomenta quando tiveres as imagens:
+# cover: "../../shared/cocktail-explorer/cover.png"
+# coverAlt: "..."
+# gallery:
+#   - src: "../../shared/cocktail-explorer/shot-1.png"
+#     alt: "Descrição da imagem 1"
+#   - src: "../../shared/cocktail-explorer/shot-2.png"
+#     alt: "Descrição da imagem 2"
+featured: true
+draft: false
+---
+
+## What it does
+
+Cocktail Explorer fetches drink recipes from TheCocktailDB. You can pull a
+completely random cocktail or search with a combination of filters — name,
+first letter, ingredient, alcoholic type, category, and glass. The results from
+several endpoints are intersected on the server, and a matching cocktail is
+presented with its image, ingredients, and step-by-step instructions.
+
+## Key features
+
+- Random cocktail discovery through the API
+- Advanced filter form combining name, letter, ingredient, alcoholic type,
+  category, and glass
+- Server-side intersection of results from multiple endpoints by ID
+- Detailed view with image, ingredients, and instructions
+- Graceful handling of empty states and API errors
+
+## Tech stack
+
+Node.js, Express, EJS templating, Axios for HTTP, Bootstrap 5, and the
+TheCocktailDB API.
+
+## My role & challenges
+
+I built the server routes, the views, and the full client flow. The tricky part
+was merging different API queries — search and filter endpoints return different
+shapes — intersecting their results by ID, and then fetching the details
+efficiently. I put particular care into robust error handling and into the UX
+for searches that return no matches.
+
+## What I learned
+
+- Designing Express routes with async/await and proper error handling
+- Working with third-party REST APIs through Axios
+- Combining and intersecting datasets on the server
+- EJS templating patterns and partials
+- Building accessible forms and clean UI states

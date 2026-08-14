@@ -1,0 +1,55 @@
+---
+title: "IscTorrent"
+summary: "Peer-to-peer file-sharing application in Java: nodes discover each other by broadcast and download files in parallel, ordered byte blocks from multiple peers."
+date: 2024-11-01
+type: "University project"
+status: "Completed"
+tags: ["Java", "TCP/IP Sockets", "Multithreading", "Thread pool", "P2P"]
+# Imagens partilhadas entre EN e PT — ficam em shared/isctorrent/
+# Descomenta quando tiveres as imagens:
+# cover: "../../shared/isctorrent/cover.png"
+# coverAlt: "..."
+# gallery:
+#   - src: "../../shared/isctorrent/shot-1.png"
+#     alt: "Descrição da imagem 1"
+#   - src: "../../shared/isctorrent/shot-2.png"
+#     alt: "Descrição da imagem 2"
+featured: true
+draft: false
+---
+
+## What it does
+
+IscTorrent is a peer-to-peer application built in Java for the Concurrent and
+Distributed Programming course. Each user runs a local node on its own port and
+connects to others in the network. When searching for a song, the request is
+broadcast to connected peers; any peer holding the file responds and starts
+sending it concurrently in ordered byte blocks. Once all blocks arrive, they are
+reassembled on the client, and the user owns the file.
+
+## Key features
+
+- Peer discovery via broadcast over active connections
+- Parallel, multi-source block transfers with client-side reordering
+- A thread pool handling simultaneous uploads and downloads
+- Reassembled-file persistence with a basic integrity check
+
+## Tech stack
+
+Java, TCP/IP sockets, multithreading, and a thread pool, developed in IntelliJ.
+
+## My role & challenges
+
+Done in pairs. I designed and implemented the discovery and transfer protocol,
+the block division, and the coordination of uploads and downloads through a
+thread pool. The main challenges were synchronising and ordering blocks arriving
+from multiple sources, avoiding race conditions, and managing I/O without
+blocking the flow.
+
+## What I learned
+
+- Programming with `ServerSocket`/`Socket` and messaging between peers
+- Thread-safe structures with `synchronized` and `ConcurrentHashMap`
+- File division, ordering, and reassembly by blocks
+- Sizing a thread pool and managing I/O-bound tasks
+- Testing on localhost and a local network with multiple ports

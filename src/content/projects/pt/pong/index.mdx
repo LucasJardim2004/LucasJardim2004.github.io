@@ -1,0 +1,52 @@
+---
+title: "Pong"
+summary: "Browser take on the arcade classic, built on the HTML5 Canvas with mouse and touch controls, realistic bounce angles, and a simple AI opponent."
+date: 2025-03-01
+type: "Game"
+status: "Completed"
+tags: ["HTML5 Canvas", "JavaScript", "CSS3"]
+# Imagens partilhadas entre EN e PT — ficam em shared/pong/
+# Descomenta quando tiveres as imagens:
+# cover: "../../shared/pong/cover.png"
+# coverAlt: "..."
+# gallery:
+#   - src: "../../shared/pong/shot-1.png"
+#     alt: "Descrição da imagem 1"
+#   - src: "../../shared/pong/shot-2.png"
+#     alt: "Descrição da imagem 2"
+featured: false
+draft: false
+---
+
+## What it does
+
+Pong is a browser game built with the HTML5 Canvas. You control the left paddle
+with the mouse — or touch on mobile — while a simple AI controls the right one.
+The ball bounces at realistic angles based on where it hits the paddle, speeds up
+during rallies, and resets after each point.
+
+## Key features
+
+- Smooth mouse and touch controls for the player paddle
+- An AI opponent that tracks the ball with a clamped speed
+- Collision detection for paddles and walls with angle variation
+- Progressive ball speed increase on each successful hit
+- A lightweight game loop using `requestAnimationFrame`
+
+## Tech stack
+
+HTML5 Canvas, JavaScript, and CSS3.
+
+## My role & challenges
+
+I implemented the rendering loop, input handling, physics, and AI. The main
+challenges were tuning the paddle AI to feel fair, adding realistic bounce angles
+based on impact position, and preventing the ball from tunnelling through paddles
+at higher speeds.
+
+## What I learned
+
+- Building a clean `requestAnimationFrame` game loop
+- Basic 2D collision detection and response
+- Input handling for both mouse and touch
+- Simple game AI and difficulty balancing

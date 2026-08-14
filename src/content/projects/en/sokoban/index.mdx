@@ -1,0 +1,57 @@
+---
+title: "Sokoban"
+summary: "Classic push-the-crates puzzle recreated in Java with a layered tile system, special tiles, an energy mechanic, and move-based scoring."
+date: 2023-06-01
+type: "University game"
+status: "Completed"
+tags: ["Java", "Object-oriented design", "2D grid engine", "Level parser"]
+# Imagens partilhadas entre EN e PT — ficam em shared/sokoban/
+# Descomenta quando tiveres as imagens:
+# cover: "../../shared/sokoban/cover.png"
+# coverAlt: "..."
+# gallery:
+#   - src: "../../shared/sokoban/shot-1.png"
+#     alt: "Descrição da imagem 1"
+#   - src: "../../shared/sokoban/shot-2.png"
+#     alt: "Descrição da imagem 2"
+featured: false
+draft: false
+---
+
+## What it does
+
+Sokoban is a classic puzzle game recreated as a pair project for the
+Object-Oriented Programming course, built in Java. The player controls a forklift
+on a grid and must push crates onto target cells. The board is modelled as
+layered matrices, where each cell can hold terrain, interactive objects, and
+entities.
+
+## Key features
+
+- Multiple levels of increasing difficulty
+- A layered tile system: terrain, objects, and entity
+- Special tiles and items: holes, breakable walls with hammers, pallets to cover
+  holes, portals, and batteries to recharge the forklift
+- A move counter and performance scoring — fewer moves is better
+- An energy system: each move drains the battery, and reaching zero loses the level
+
+## Tech stack
+
+Java with an object-oriented design, a 2D grid engine, and a level parser,
+developed in Eclipse.
+
+## My role & challenges
+
+Built in a pair, I focused on the core mechanics and systems design: level
+parsing, movement and collision rules for pushing crates, layered tile updates,
+and the energy system. The challenges were keeping the rules consistent when
+special tiles combined — pushing over holes covered by pallets, interactions
+with portals — and keeping the codebase modular and testable.
+
+## What I learned
+
+- Applying OOP principles: encapsulation, and composition over inheritance
+- Designing a game loop with deterministic movement rules
+- Implementing a layered grid model and collision handling
+- Parsing level files and validating states
+- Pair-programming workflow and version-control practices

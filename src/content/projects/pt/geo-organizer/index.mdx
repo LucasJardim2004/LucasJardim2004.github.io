@@ -1,0 +1,56 @@
+---
+title: "GeoOrganizer"
+summary: "Java Swing desktop app that imports property data from CSV and renders it as an interactive adjacency graph, with filters by region and owner."
+date: 2025-04-01
+type: "University project"
+status: "Completed"
+tags: ["Java", "Swing", "Graph model", "CSV parsing"]
+# Imagens partilhadas entre EN e PT — ficam em shared/geo-organizer/
+# Descomenta quando tiveres as imagens:
+# cover: "../../shared/geo-organizer/cover.png"
+# coverAlt: "..."
+# gallery:
+#   - src: "../../shared/geo-organizer/shot-1.png"
+#     alt: "Descrição da imagem 1"
+#   - src: "../../shared/geo-organizer/shot-2.png"
+#     alt: "Descrição da imagem 2"
+featured: true
+draft: false
+---
+
+## What it does
+
+GeoOrganizer is a desktop application built in Java with a Swing UI. Users upload
+a CSV file where each row is a property or parcel. The app parses the file and
+builds a graph — each node is a property, each edge connects adjacent properties
+— producing a clear visual network. The demo used a dataset from Madeira Island.
+
+## Key features
+
+- CSV import with schema validation and error feedback
+- Graph visualisation where nodes are properties and edges mean adjacency
+- Filters by district/island, municipality, parish, and owner ID
+- Interactive highlight and zoom to explore specific owners or regions
+- A foundation for suggesting property exchanges between owners to normalise
+  land distribution
+
+## Tech stack
+
+Java, Swing, a custom graph model, and CSV parsing, developed in IntelliJ IDEA.
+
+## My role & challenges
+
+Developed in a group of four for the Software Engineering course, managed with
+Agile SCRUM — regular sprints, backlog management, and role distribution. My
+contribution was the full technical flow: CSV ingestion, data validation, graph
+construction, and the Swing UI. The challenges were keeping the UI responsive on
+larger datasets, defining adjacency rules from the CSV fields, and designing
+filters that were useful without overwhelming the interface.
+
+## What I learned
+
+- File I/O and CSV parsing patterns in Java
+- Modelling geographic data as graphs and rendering it
+- Swing best practices: the Event Dispatch Thread, background tasks, UI state
+- Designing filterable UIs for data exploration
+- First steps toward recommendation logic for property exchanges

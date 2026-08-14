@@ -1,0 +1,135 @@
+---
+// Galeria de imagens do projecto (carrossel). Só é renderizada quando há
+// imagens. Sóbrio e acessível: navegável por teclado, botões com aria-label,
+// indicadores de posição, sem autoplay (respeita quem lê devagar e reduced-motion).
+import { Image } from 'astro:assets';
+import type { Lang } from '../i18n/utils';
+
+interface GalleryImage {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  images: GalleryImage[];
+  lang: Lang;
+}
+
+const { images, lang } = Astro.props;
+
+const label = lang === 'pt' ? 'Galeria de imagens' : 'Image gallery';
+const prevLabel = lang === 'pt' ? 'Imagem anterior' : 'Previous image';
+const nextLabel = lang === 'pt' ? 'Imagem seguinte' : 'Next image';
+---
+
+{
+  images.length > 0 && (
+    <section
+      class="project-gallery my-12"
+      aria-roledescription="carousel"
+      aria-label={label}
+    >
+      {/* Trilho de imagens com scroll-snap */}
+      <div class="gallery-track flex snap-x snap-mandatory gap-4 overflow-x-auto rounded-card">
+        {images.map((image, i) => (
+          <figure
+            class="gallery-slide w-full flex-none snap-center"
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} / ${images.length}`}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={1200}
+              height={675}
+              class="w-full rounded-card border border-border object-cover"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+            <figcaption class="mt-2 text-center text-sm text-content-muted">
+              {image.alt}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      {/* Controlos — só quando há mais do que uma imagem */}
+      {images.length > 1 && (
+        <div class="mt-4 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            class="gallery-prev grid h-9 w-9 place-items-center rounded-control border border-border text-content-secondary transition hover:border-content hover:text-content"
+            aria-label={prevLabel}
+          >
+            ←
+          </button>
+          <div class="gallery-dots flex items-center gap-2" aria-hidden="true">
+            {images.map((_, i) => (
+              <span
+                class="dot h-1.5 w-1.5 rounded-full bg-border transition"
+                data-index={i}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            class="gallery-next grid h-9 w-9 place-items-center rounded-control border border-border text-content-secondary transition hover:border-content hover:text-content"
+            aria-label={nextLabel}
+          >
+            →
+          </button>
+        </div>
+      )}
+    </section>
+  )
+}
+
+<script>
+  // Um script leve, sem dependências. Cada galeria é autónoma.
+  document.querySelectorAll<HTMLElement>('.project-gallery').forEach((gallery) => {
+    const track = gallery.querySelector<HTMLElement>('.gallery-track');
+    const slides = gallery.querySelectorAll<HTMLElement>('.gallery-slide');
+    const prev = gallery.querySelector<HTMLButtonElement>('.gallery-prev');
+    const next = gallery.querySelector<HTMLButtonElement>('.gallery-next');
+    const dots = gallery.querySelectorAll<HTMLElement>('.dot');
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+
+    const update = () => {
+      slides[index]?.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest',
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-accent', i === index);
+        dot.classList.toggle('bg-border', i !== index);
+      });
+    };
+
+    prev?.addEventListener('click', () => {
+      index = (index - 1 + slides.length) % slides.length;
+      update();
+    });
+    next?.addEventListener('click', () => {
+      index = (index + 1) % slides.length;
+      update();
+    });
+
+    // Mantém o indicador em sincronia quando o utilizador faz scroll manual.
+    track.addEventListener('scroll', () => {
+      const slideWidth = track.clientWidth;
+      const current = Math.round(track.scrollLeft / slideWidth);
+      if (current !== index && current >= 0 && current < slides.length) {
+        index = current;
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('bg-accent', i === index);
+          dot.classList.toggle('bg-border', i !== index);
+        });
+      }
+    });
+
+    update();
+  });
+</script>
