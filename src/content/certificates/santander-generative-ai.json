@@ -1,6 +1,7 @@
 {
   "title": "Generative AI",
   "issuer": "Santander Open Academy",
-  "date": "2024-09-26",
-  "category": "ai"
+  "date": "2024-09-25",
+  "category": "ai",
+  "image": "./images/santander-generative-ai.png"
 }

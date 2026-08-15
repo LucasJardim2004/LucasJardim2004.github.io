@@ -1,6 +1,8 @@
 {
   "title": "Claude Code in Action",
   "issuer": "Anthropic",
-  "date": "2026-06-29",
-  "category": "ai"
+  "date": "2025-01-01",
+  "category": "ai",
+  "credentialUrl": "https://verify.skilljar.com/c/pbt9uz6peqnt",
+  "image": "./images/anthropic-claude-code.png"
 }

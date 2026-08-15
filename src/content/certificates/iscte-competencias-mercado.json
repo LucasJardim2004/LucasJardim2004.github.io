@@ -1,6 +1,7 @@
 {
-  "title": "Skills for the job market",
+  "title": "Competências para o mercado de trabalho",
   "issuer": "ISCTE E-Learning",
   "date": "2022-11-19",
-  "category": "soft skills"
+  "category": "soft-skills",
+  "image": "./images/iscte-competencias-mercado.png"
 }

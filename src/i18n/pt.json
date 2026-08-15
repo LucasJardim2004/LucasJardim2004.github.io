@@ -36,18 +36,16 @@
       "verify": "Verificar credencial",
       "categories": {
         "ai": "IA & Dados",
-        "soft skills": "Soft skills",
-        "leadership": "Liderança",
-        "professional": "Competências profissionais",
         "web": "Desenvolvimento web",
-        "tools": "Ferramentas & produtividade"
+        "tools": "Ferramentas & produtividade",
+        "soft-skills": "Soft skills"
       }
     },
     "contact": {
       "title": "Contactos",
       "intro": "A melhor forma de me contactar é por email. Podes também encontrar-me no LinkedIn e no GitHub.",
       "email": "Email",
-      "phone": "Telemóvel",
+      "phone": "Telefone",
       "linkedin": "LinkedIn",
       "github": "GitHub",
       "downloadCv": "Descarregar CV",

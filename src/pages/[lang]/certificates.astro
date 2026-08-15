@@ -1,7 +1,4 @@
 ---
-// Página de certificados agrupados por categoria. Sem página de detalhe —
-// decisão fixada no modelo de conteúdo. Cada categoria é uma secção com
-// título e grelha de cards.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CertificateCard from '../../components/CertificateCard.astro';
 import { getCollection } from 'astro:content';
@@ -16,15 +13,21 @@ const lang: Lang = isLang(rawLang) ? rawLang : 'en';
 
 const allCerts = await getCollection('certificates');
 
-// Ordem das categorias na página — determina a sequência visual.
-const categoryOrder = ['ai', 'web', 'tools', 'soft skills'];
+// Ordem das categorias na página.
+const categoryOrder = ['ai', 'web', 'tools', 'soft-skills'];
 
-// Agrupa por categoria, mantendo a ordem definida acima.
+// Agrupa por categoria, ordenando cada grupo por data descendente.
 const grouped = categoryOrder
   .map((cat) => ({
     key: cat,
     label: t(lang, `pages.certificates.categories.${cat}`),
-    items: allCerts.filter((c) => c.data.category === cat),
+    items: allCerts
+      .filter((c) => c.data.category === cat)
+      .sort((a, b) => {
+        // date é string "YYYY-MM-DD" nos certificados — comparação lexicográfica
+        // funciona correctamente para este formato.
+        return b.data.date.localeCompare(a.data.date);
+      }),
   }))
   .filter((g) => g.items.length > 0);
 ---

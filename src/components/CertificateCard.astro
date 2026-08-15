@@ -1,6 +1,7 @@
 ---
-// Card de certificado. Mais enxuto que o ProjectCard — sem imagem de capa,
-// sem corpo longo. Título, emissor, data, e link de verificação opcional.
+// Card de certificado. Mostra a imagem do certificado quando existe,
+// caso contrário mostra um bloco com as iniciais do emissor.
+import { Image } from 'astro:assets';
 import { type Lang, t } from '../i18n/utils';
 import type { CollectionEntry } from 'astro:content';
 
@@ -10,21 +11,52 @@ interface Props {
 }
 
 const { certificate, lang } = Astro.props;
-const { title, issuer, date, credentialUrl } = certificate.data;
+const { title, issuer, date, credentialUrl, image } = certificate.data;
 
 const year = new Date(date).getFullYear();
+
+// Iniciais do emissor para o fallback visual
+const initials = issuer
+  .split(' ')
+  .filter((w: string) => w.length > 2)
+  .slice(0, 2)
+  .map((w: string) => w[0])
+  .join('');
 ---
 
 <article
-  class="flex flex-col gap-3 rounded-card border border-border bg-surface p-5 transition duration-150 hover:border-content-secondary"
+  class="flex flex-col overflow-hidden rounded-card border border-border bg-surface transition duration-150 hover:border-content-secondary"
 >
-  <div class="flex items-start justify-between gap-4">
-    <div class="flex-1">
+  {/* Imagem do certificado */}
+  {
+    image ? (
+      <div class="aspect-[4/3] w-full overflow-hidden bg-accent-soft">
+        <Image
+          src={image}
+          alt={`${title} — ${issuer}`}
+          width={600}
+          height={450}
+          class="h-full w-full object-cover object-top"
+          loading="lazy"
+        />
+      </div>
+    ) : (
+      <div class="flex aspect-[4/3] w-full items-center justify-center bg-accent-soft">
+        <span class="font-serif text-4xl font-medium text-accent opacity-40">
+          {initials}
+        </span>
+      </div>
+    )
+  }
+
+  {/* Conteúdo */}
+  <div class="flex flex-1 items-start justify-between gap-4 p-4">
+    <div class="flex-1 min-w-0">
       <p class="mb-1 font-mono text-xs text-content-muted">{issuer} · {year}</p>
-      <h3 class="font-medium leading-snug text-content">{title}</h3>
+      <h3 class="font-medium leading-snug text-content text-sm">{title}</h3>
     </div>
 
-    {/* Ícone de credencial verificada, quando existe */}
+    {/* Ícone de credencial verificada */}
     {
       credentialUrl && (
         <a

@@ -36,11 +36,9 @@
       "verify": "Verify credential",
       "categories": {
         "ai": "AI & Data",
-        "soft skills": "Soft skills",
-        "leadership": "Leadership",
-        "professional": "Professional skills",
         "web": "Web development",
-        "tools": "Tools & productivity"
+        "tools": "Tools & productivity",
+        "soft-skills": "Soft skills"
       }
     },
     "contact": {
