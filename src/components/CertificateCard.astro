@@ -1,6 +1,7 @@
 ---
 // Card de certificado. Mostra a imagem do certificado quando existe,
 // caso contrário mostra um bloco com as iniciais do emissor.
+// Clicar na imagem abre um lightbox com a imagem a tamanho completo.
 import { Image } from 'astro:assets';
 import { type Lang, t } from '../i18n/utils';
 import type { CollectionEntry } from 'astro:content';
@@ -15,6 +16,9 @@ const { title, issuer, date, credentialUrl, image } = certificate.data;
 
 const year = new Date(date).getFullYear();
 
+// ID único para ligar o botão ao lightbox deste card
+const id = `cert-${certificate.id.replace(/[^a-z0-9]/gi, '-')}`;
+
 // Iniciais do emissor para o fallback visual
 const initials = issuer
   .split(' ')
@@ -22,24 +26,79 @@ const initials = issuer
   .slice(0, 2)
   .map((w: string) => w[0])
   .join('');
+
+const closeLabel = lang === 'pt' ? 'Fechar' : 'Close';
+const expandLabel = lang === 'pt' ? 'Ver certificado em tamanho completo' : 'View full certificate';
 ---
 
 <article
   class="flex flex-col overflow-hidden rounded-card border border-border bg-surface transition duration-150 hover:border-content-secondary"
 >
-  {/* Imagem do certificado */}
+  {/* Imagem do certificado — clicável se existir */}
   {
     image ? (
-      <div class="aspect-[4/3] w-full overflow-hidden bg-accent-soft">
-        <Image
-          src={image}
-          alt={`${title} — ${issuer}`}
-          width={600}
-          height={450}
-          class="h-full w-full object-cover object-top"
-          loading="lazy"
-        />
-      </div>
+      <>
+        <button
+          type="button"
+          aria-label={expandLabel}
+          aria-expanded="false"
+          aria-controls={id}
+          class="cert-trigger group relative aspect-[4/3] w-full overflow-hidden bg-accent-soft text-left"
+        >
+          <Image
+            src={image}
+            alt={`${title} — ${issuer}`}
+            width={600}
+            height={450}
+            class="h-full w-full object-cover object-top transition duration-150 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+          {/* Indicador de zoom — aparece no hover */}
+          <span
+            class="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-control bg-black/40 text-white opacity-0 backdrop-blur-sm transition duration-150 group-hover:opacity-100"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 16 16" fill="currentColor" class="h-3.5 w-3.5">
+              <path d="M6 1a5 5 0 1 0 3.47 8.53l3.5 3.5a.75.75 0 1 0 1.06-1.06l-3.5-3.5A5 5 0 0 0 6 1ZM3 6a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-1.5a.75.75 0 0 1 .75.75v.75h.75a.75.75 0 0 1 0 1.5h-.75v.75a.75.75 0 0 1-1.5 0V7.5H4.5a.75.75 0 0 1 0-1.5h.75V5.25A.75.75 0 0 1 6 4.5Z"/>
+            </svg>
+          </span>
+        </button>
+
+        {/* Lightbox — dialog nativo para acessibilidade */}
+        <dialog
+          id={id}
+          class="cert-lightbox fixed inset-0 m-0 h-full w-full max-h-none max-w-none bg-black/80 p-4 backdrop-blur-sm"
+          aria-label={`${title} — ${issuer}`}
+        >
+          <div class="flex h-full flex-col items-center justify-center gap-4">
+            {/* Botão de fechar */}
+            <div class="flex w-full max-w-4xl items-center justify-between">
+              <p class="text-sm text-white/70">{title} — {issuer}</p>
+              <button
+                type="button"
+                class="cert-close grid h-9 w-9 place-items-center rounded-control border border-white/20 text-white/70 transition hover:border-white hover:text-white"
+                aria-label={closeLabel}
+              >
+                <svg viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+                  <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Imagem a tamanho completo */}
+            <div class="max-h-[80vh] max-w-4xl overflow-auto rounded-card">
+              <Image
+                src={image}
+                alt={`${title} — ${issuer}`}
+                width={1200}
+                height={900}
+                class="w-full rounded-card object-contain"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </dialog>
+      </>
     ) : (
       <div class="flex aspect-[4/3] w-full items-center justify-center bg-accent-soft">
         <span class="font-serif text-4xl font-medium text-accent opacity-40">
@@ -84,3 +143,52 @@ const initials = issuer
     }
   </div>
 </article>
+
+<script>
+  // Lightbox com <dialog> nativo — acessível por teclado e com foco gerido.
+  // Cada card é autónomo; o script processa todos os cards na página.
+  document.querySelectorAll<HTMLElement>('.cert-trigger').forEach((trigger) => {
+    const dialogId = trigger.getAttribute('aria-controls');
+    if (!dialogId) return;
+    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+    if (!dialog) return;
+    const closeBtn = dialog.querySelector<HTMLButtonElement>('.cert-close');
+
+    const open = () => {
+      dialog.showModal();
+      trigger.setAttribute('aria-expanded', 'true');
+      closeBtn?.focus();
+    };
+
+    const close = () => {
+      dialog.close();
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.focus();
+    };
+
+    trigger.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+
+    // Fechar ao clicar fora da imagem (no backdrop)
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+
+    // Fechar com Escape (o <dialog> já faz isto nativamente, mas
+    // precisamos de repor o aria-expanded)
+    dialog.addEventListener('cancel', () => {
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+<style>
+  /* Estilo do dialog — o Tailwind não cobre o ::backdrop nativo */
+  dialog.cert-lightbox::backdrop {
+    background: transparent; /* gerido pela classe bg-black/80 no próprio dialog */
+  }
+
+  dialog.cert-lightbox:not([open]) {
+    display: none;
+  }
+</style>
