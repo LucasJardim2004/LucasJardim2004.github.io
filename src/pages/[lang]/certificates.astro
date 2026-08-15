@@ -1,5 +1,10 @@
 ---
+// Página de certificados agrupados por categoria. Sem página de detalhe —
+// decisão fixada no modelo de conteúdo. Cada categoria é uma secção com
+// título e grelha de cards.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CertificateCard from '../../components/CertificateCard.astro';
+import { getCollection } from 'astro:content';
 import { languages, t, isLang, type Lang } from '../../i18n/utils';
 
 export function getStaticPaths() {
@@ -8,13 +13,55 @@ export function getStaticPaths() {
 
 const rawLang = Astro.params.lang;
 const lang: Lang = isLang(rawLang) ? rawLang : 'en';
+
+const allCerts = await getCollection('certificates');
+
+// Ordem das categorias na página — determina a sequência visual.
+const categoryOrder = ['ai', 'web', 'tools', 'leadership', 'professional'];
+
+// Agrupa por categoria, mantendo a ordem definida acima.
+const grouped = categoryOrder
+  .map((cat) => ({
+    key: cat,
+    label: t(lang, `pages.certificates.categories.${cat}`),
+    items: allCerts.filter((c) => c.data.category === cat),
+  }))
+  .filter((g) => g.items.length > 0);
 ---
 
-<BaseLayout lang={lang} title={t(lang, 'pages.certificates.title')}>
-  <h1 class="mb-6 font-serif text-4xl font-medium tracking-tight text-content">
+<BaseLayout
+  lang={lang}
+  title={`${t(lang, 'pages.certificates.title')} — Lucas Jardim`}
+>
+  <h1 class="mb-3 font-serif text-4xl font-medium tracking-tight text-content">
     {t(lang, 'pages.certificates.title')}
   </h1>
-  <p class="text-content-secondary">
-    {t(lang, 'pages.certificates.placeholder')}
+  <p class="mb-16 text-content-secondary">
+    {allCerts.length}
+    {lang === 'pt'
+      ? allCerts.length === 1 ? 'certificado' : 'certificados'
+      : allCerts.length === 1 ? 'certificate' : 'certificates'}
   </p>
+
+  <div class="flex flex-col gap-14">
+    {
+      grouped.map((group) => (
+        <section aria-labelledby={`cat-${group.key}`}>
+          <h2
+            id={`cat-${group.key}`}
+            class="mb-6 font-serif text-xl font-medium text-content"
+          >
+            {group.label}
+          </h2>
+          <ul class="grid gap-4 sm:grid-cols-2" role="list">
+            {group.items.map((cert) => (
+              <li>
+                <CertificateCard certificate={cert} lang={lang} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
 </BaseLayout>

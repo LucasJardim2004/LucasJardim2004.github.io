@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens de cor do design system. O modo claro é o estado base; o modo escuro
-   ativa-se pela classe .dark no elemento <html>. Ver docs/design-system.md. */
+/* Tokens de cor do design system. */
 @layer base {
   :root {
     --color-bg: #fbfaf7;
@@ -37,28 +36,46 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: '"Inter Variable"', system-ui, sans-serif;
+    font-family: 'Inter Variable', system-ui, sans-serif;
+    font-size: 1rem;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  /* Foco visível em tudo o que é navegável por teclado (acessibilidade AA). */
+  /* Foco visível — acessibilidade AA */
   :focus-visible {
     outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 
-  /* Respeita quem prefere menos movimento. */
+  /* Alvos de toque mínimos — 44px para mobile */
+  a, button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Exceções: inline links no corpo de texto não precisam de 44px */
+  p a, li a, .prose a {
+    min-height: unset;
+    display: inline;
+  }
+
+  /* Respeita prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+
+  /* Seleção de texto com cor de acento */
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
   }
 }

@@ -1,0 +1,40 @@
+---
+// Página 404 — rota não encontrada. O GitHub Pages serve este ficheiro
+// automaticamente quando um URL não existe. Respeita o design e tem
+// caminho de volta para a home.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { defaultLang } from '../i18n/utils';
+---
+
+<BaseLayout
+  lang={defaultLang}
+  title="Page not found — Lucas Jardim"
+  description="The page you were looking for doesn't exist."
+>
+  <div class="flex flex-col items-start gap-6 py-8">
+    <p class="font-mono text-sm text-content-muted">404</p>
+
+    <h1 class="font-serif text-4xl font-medium tracking-tight text-content sm:text-5xl">
+      Page not found.
+    </h1>
+
+    <p class="max-w-prose text-content-secondary">
+      The page you were looking for doesn't exist or has been moved.
+    </p>
+
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/en/"
+        class="rounded-control bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover"
+      >
+        Go to homepage
+      </a>
+      <a
+        href="/en/projects"
+        class="rounded-control border border-border px-5 py-2.5 text-sm font-medium text-content-secondary transition hover:border-content hover:text-content"
+      >
+        View projects
+      </a>
+    </div>
+  </div>
+</BaseLayout>

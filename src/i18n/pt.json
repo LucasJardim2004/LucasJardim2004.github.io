@@ -18,22 +18,39 @@
     "switch": "Mudar idioma"
   },
   "home": {
-    "eyebrow": "Em construção",
+    "role": "Tech Analyst @ Deloitte",
     "heading": "Lucas Jardim",
-    "intro": "Site pessoal e portefólio. As fundações estão prontas — projetos, certificados, contactos e CV vêm a seguir."
+    "intro": "Profissional de tecnologia com licenciatura em Ciências da Computação e Gestão pelo ISCTE. Gosto de construir aplicações web, resolver problemas complexos e desenvolver soluções tecnológicas que criam valor real.",
+    "interests": "Os meus interesses abrangem inteligência artificial, engenharia de software, automação e transformação digital.",
+    "featuredProjects": "Projetos selecionados",
+    "allProjects": "Ver todos os projetos",
+    "downloadCv": "Descarregar CV"
   },
   "pages": {
     "projects": {
       "title": "Projetos",
-      "placeholder": "A secção de projetos chega na próxima fase."
+      "placeholder": "Nenhum projeto encontrado."
     },
     "certificates": {
       "title": "Certificados",
-      "placeholder": "A secção de certificados chega mais tarde."
+      "verify": "Verificar credencial",
+      "categories": {
+        "ai": "IA & Dados",
+        "leadership": "Liderança",
+        "professional": "Competências profissionais",
+        "web": "Desenvolvimento web",
+        "tools": "Ferramentas & produtividade"
+      }
     },
     "contact": {
       "title": "Contactos",
-      "placeholder": "Os contactos chegam mais tarde."
+      "intro": "A melhor forma de me contactar é por email. Podes também encontrar-me no LinkedIn e no GitHub.",
+      "email": "Email",
+      "phone": "Telefone",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "downloadCv": "Descarregar CV",
+      "cvNote": "CV de uma página em inglês, formato PDF."
     }
   }
 }

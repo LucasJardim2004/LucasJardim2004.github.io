@@ -1,0 +1,49 @@
+---
+// Componente SEO: meta tags, Open Graph, Twitter Card.
+// Incluído no BaseLayout — cada página passa o seu título e descrição.
+import { defaultLang, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  ogImage?: string;      // URL absoluto da imagem OG. Default: /og-image.png
+  ogType?: 'website' | 'article';
+  canonicalUrl?: string; // URL canónico. Default: URL atual
+}
+
+const {
+  lang = defaultLang,
+  title,
+  description,
+  ogImage,
+  ogType = 'website',
+  canonicalUrl,
+} = Astro.props;
+
+const site = 'https://lucasjardim2004.github.io';
+const canonical = canonicalUrl ?? `${site}${Astro.url.pathname}`;
+const image = ogImage ?? `${site}/og-image.png`;
+---
+
+{/* Meta base */}
+<link rel="canonical" href={canonical} />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Lucas Jardim" />
+
+{/* Open Graph */}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="Lucas Jardim" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={lang === 'pt' ? 'pt_PT' : 'en_GB'} />
+
+{/* Twitter Card */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />

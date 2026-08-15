@@ -18,22 +18,39 @@
     "switch": "Switch language"
   },
   "home": {
-    "eyebrow": "Work in progress",
+    "role": "Tech Analyst @ Deloitte",
     "heading": "Lucas Jardim",
-    "intro": "Personal site and portfolio. The foundations are in place — projects, certificates, contact and CV are on the way."
+    "intro": "Technology professional with a BSc in Computer Science and Business Management from ISCTE. I enjoy building web applications, solving complex problems, and developing technology-driven solutions that create real value.",
+    "interests": "My interests span artificial intelligence, software engineering, automation, and digital transformation.",
+    "featuredProjects": "Selected projects",
+    "allProjects": "All projects",
+    "downloadCv": "Download CV"
   },
   "pages": {
     "projects": {
       "title": "Projects",
-      "placeholder": "The projects section is coming in the next phase."
+      "placeholder": "No projects found."
     },
     "certificates": {
       "title": "Certificates",
-      "placeholder": "The certificates section is coming later."
+      "verify": "Verify credential",
+      "categories": {
+        "ai": "AI & Data",
+        "leadership": "Leadership",
+        "professional": "Professional skills",
+        "web": "Web development",
+        "tools": "Tools & productivity"
+      }
     },
     "contact": {
       "title": "Contact",
-      "placeholder": "Contact details are coming later."
+      "intro": "The best way to reach me is by email. You can also find me on LinkedIn and GitHub.",
+      "email": "Email",
+      "phone": "Phone",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "downloadCv": "Download CV",
+      "cvNote": "One-page CV in English, PDF format."
     }
   }
 }

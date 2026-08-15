@@ -1,7 +1,4 @@
 ---
-// Header do site: nome à esquerda (link para home), navegação ao centro,
-// controlos à direita. Consistente em todas as páginas. Marca a secção atual
-// via aria-current, e o CV destaca-se ligeiramente como ação primária.
 import { t, localizedPath, type Lang } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import ThemeToggle from './ThemeToggle.astro';
@@ -10,63 +7,67 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-
 const currentPath = Astro.url.pathname;
 
-// Determina se um item de navegação é o atual (para aria-current + estilo).
 const isCurrent = (path: string): boolean => {
   const target = localizedPath(lang, path);
-  return currentPath === target || currentPath === `${target}/`;
+  return currentPath === target || currentPath.startsWith(`${target}/`);
 };
 
 const navItems = [
-  { key: 'projects', label: t(lang, 'nav.projects'), href: localizedPath(lang, 'projects') },
+  { key: 'projects',     label: t(lang, 'nav.projects'),     href: localizedPath(lang, 'projects') },
   { key: 'certificates', label: t(lang, 'nav.certificates'), href: localizedPath(lang, 'certificates') },
-  { key: 'contact', label: t(lang, 'nav.contact'), href: localizedPath(lang, 'contact') },
+  { key: 'contact',      label: t(lang, 'nav.contact'),       href: localizedPath(lang, 'contact') },
 ];
 ---
 
-<header
-  class="border-b border-border"
+{/* Skip to main content — acessibilidade, visível ao foco por teclado */}
+<a
+  href="#main-content"
+  class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
 >
+  Skip to main content
+</a>
+
+<header class="border-b border-border">
   <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-6 py-5">
-    {/* Nome / logo: link para a home do idioma atual */}
+    {/* Nome: link para a home */}
     <a
       href={localizedPath(lang)}
       class="font-serif text-lg font-medium tracking-tight text-content transition hover:text-accent"
+      aria-label="Lucas Jardim — home"
     >
       Lucas Jardim
     </a>
 
     <div class="flex items-center gap-2 sm:gap-4">
-      {/* Navegação principal */}
-      <nav aria-label="Primary" class="hidden sm:block">
-        <ul class="flex items-center gap-4 text-sm">
-          {
-            navItems.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  aria-current={isCurrent(item.key) ? 'page' : undefined}
-                  class:list={[
-                    'transition hover:text-content',
-                    isCurrent(item.key)
-                      ? 'text-content'
-                      : 'text-content-secondary',
-                  ]}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
+      {/* Navegação desktop */}
+      <nav aria-label="Primary navigation" class="hidden sm:block">
+        <ul class="flex items-center gap-4 text-sm" role="list">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.key) ? 'page' : undefined}
+                class:list={[
+                  'transition hover:text-content',
+                  isCurrent(item.key) ? 'text-content' : 'text-content-secondary',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
 
-      {/* CV: ação primária, destaca-se ligeiramente */}
+      {/* Download CV — destaque subtil */}
       <a
         href="/cv/lucas-jardim-cv.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
         class="hidden rounded-control border border-accent px-3 py-1.5 text-sm text-accent transition hover:bg-accent-soft md:inline-block"
+        aria-label="Download CV (opens PDF)"
       >
         {t(lang, 'nav.downloadCv')}
       </a>
@@ -76,33 +77,35 @@ const navItems = [
     </div>
   </div>
 
-  {/* Navegação para telemóvel (aparece por baixo do header) */}
-  <nav aria-label="Primary mobile" class="border-t border-border sm:hidden">
-    <ul class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-6 py-3 text-sm">
-      {
-        navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              aria-current={isCurrent(item.key) ? 'page' : undefined}
-              class:list={[
-                'transition hover:text-content',
-                isCurrent(item.key)
-                  ? 'text-content'
-                  : 'text-content-secondary',
-              ]}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))
-      }
+  {/* Navegação mobile */}
+  <nav aria-label="Mobile navigation" class="border-t border-border sm:hidden">
+    <ul
+      class="mx-auto flex max-w-3xl items-center justify-between gap-2 px-6 py-3 text-sm"
+      role="list"
+    >
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isCurrent(item.key) ? 'page' : undefined}
+            class:list={[
+              'transition hover:text-content',
+              isCurrent(item.key) ? 'text-content' : 'text-content-secondary',
+            ]}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
       <li>
         <a
           href="/cv/lucas-jardim-cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           class="text-accent transition hover:text-accent-hover"
+          aria-label="Download CV"
         >
-          {t(lang, 'nav.downloadCv')}
+          CV
         </a>
       </li>
     </ul>

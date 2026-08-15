@@ -1,30 +1,31 @@
 ---
-// Moldura base de todas as páginas. Recebe o idioma para propagar corretamente
-// aos textos, ao <html lang>, ao alternate link e aos componentes.
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
 import { defaultLang, type Lang } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
   title?: string;
   description?: string;
+  ogImage?: string;
 }
 
 const {
   lang = defaultLang,
   title = 'Lucas Jardim',
-  description = 'Personal site and portfolio of Lucas Jardim.',
+  description = 'Tech Analyst at Deloitte and software engineer. Personal site with projects, certificates and contact.',
+  ogImage,
 } = Astro.props;
 
-// Constrói o URL "alternate" para o outro idioma, preservando o caminho.
 const otherLang: Lang = lang === 'en' ? 'pt' : 'en';
 const stripped = Astro.url.pathname.replace(/^\/(en|pt)\/?/, '');
 const alternateHref = `/${otherLang}/${stripped}`;
+const site = 'https://lucasjardim2004.github.io';
 ---
 
 <!doctype html>
@@ -32,22 +33,27 @@ const alternateHref = `/${otherLang}/${stripped}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Favicon */}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Título e descrição */}
     <title>{title}</title>
     <meta name="description" content={description} />
 
-    {/* SEO/i18n: sinaliza a versão equivalente no outro idioma */}
-    <link rel="alternate" hreflang={otherLang} href={alternateHref} />
-    <link rel="alternate" hreflang={lang} href={Astro.url.pathname} />
-    <link rel="alternate" hreflang="x-default" href={`/${defaultLang}/${stripped}`} />
+    {/* SEO, Open Graph, Twitter Card */}
+    <SEO lang={lang} title={title} description={description} ogImage={ogImage} />
 
-    {/* Aplica o tema antes do primeiro paint para evitar flash. */}
+    {/* hreflang para os dois idiomas */}
+    <link rel="alternate" hreflang={otherLang} href={`${site}${alternateHref}`} />
+    <link rel="alternate" hreflang={lang} href={`${site}${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang="x-default" href={`${site}/en/${stripped}`} />
+
+    {/* Tema sem flash: aplica antes do primeiro paint */}
     <script is:inline>
       (() => {
         const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (stored === 'dark' || (!stored && prefersDark)) {
           document.documentElement.classList.add('dark');
         }
@@ -57,7 +63,7 @@ const alternateHref = `/${otherLang}/${stripped}`;
 
   <body class="flex min-h-screen flex-col antialiased">
     <Header lang={lang} />
-    <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+    <main id="main-content" class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
       <slot />
     </main>
     <Footer lang={lang} />
