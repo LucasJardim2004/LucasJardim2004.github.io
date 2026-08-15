@@ -6,14 +6,13 @@ type: "Web app"
 status: "Completed"
 tags: ["Node.js", "Express", "PostgreSQL", "EJS", "JavaScript"]
 # Imagens partilhadas entre EN e PT — ficam em shared/flag-guesser/
-# Descomenta quando tiveres as imagens:
-# cover: "../../shared/flag-guesser/cover.png"
-# coverAlt: "..."
-# gallery:
-#   - src: "../../shared/flag-guesser/shot-1.png"
-#     alt: "Descrição da imagem 1"
-#   - src: "../../shared/flag-guesser/shot-2.png"
-#     alt: "Descrição da imagem 2"
+cover: "../../shared/flag-guesser/cover.png"
+coverAlt: "..."
+gallery:
+  - src: "../../shared/flag-guesser/shot-1.png"
+    alt: "Descrição da imagem 1"
+  - src: "../../shared/flag-guesser/shot-2.png"
+    alt: "Descrição da imagem 2"
 featured: false
 draft: false
 ---
@@ -22,13 +21,13 @@ draft: false
 
 Flag Guesser displays a flag and asks the player to type the country's name. The
 input is validated against a PostgreSQL database — with case and accent
-normalisation — and if it matches, it counts as correct and the game moves on to
+normalization — and if it matches, it counts as correct and the game moves on to
 the next flag.
 
 ## Key features
 
 - Random flag selection from the database
-- Server-side validation with normalised, accent- and case-insensitive matching
+- Server-side validation with normalized, accent- and case-insensitive matching
 - Immediate correct/wrong feedback and score tracking
 
 ## Tech stack
@@ -38,13 +37,14 @@ Node.js, Express, PostgreSQL, EJS, and JavaScript.
 ## My role & challenges
 
 I implemented the whole flow end to end: the UI, the API, and the data layer.
-The biggest challenge was normalising user input — accents, spacing, name
+The biggest challenge was normalizing user input — accents, spacing, name
 variations — and ensuring efficient database matching with `ILIKE` and
-normalisation functions without hurting performance.
+normalization functions without hurting performance.
 
 ## What I learned
 
 - Designing a small validation API in Express
-- Parameterised queries in PostgreSQL
-- String normalisation — case folding and accent removal — and `ILIKE`
+- Parameterized queries in PostgreSQL
+- String normalization — case folding and accent removal — and `ILIKE`
 - Basic indexing and performance considerations in text matching
+
