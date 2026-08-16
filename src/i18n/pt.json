@@ -20,11 +20,10 @@
   "home": {
     "role": "Tech Analyst @ Deloitte",
     "heading": "Lucas Jardim",
-    "intro": "Profissional de tecnologia com licenciatura em Ciências da Computação e Gestão pelo ISCTE. Gosto de construir aplicações web, resolver problemas complexos e desenvolver soluções tecnológicas que criam valor real.",
+    "intro": "Profissional de tecnologia com uma licenciatura em Informática e Gestão de Empresas no ISCTE. Gosto de construir aplicações web, resolver problemas complexos e desenvolver soluções tecnológicas que criam valor real.",
     "interests": "Os meus interesses abrangem inteligência artificial, engenharia de software, automação e transformação digital.",
-    "featuredProjects": "Projetos selecionados",
-    "allProjects": "Ver todos os projetos",
-    "downloadCv": "Descarregar CV"
+    "viewProjects": "Ver projetos",
+    "getInTouch": "Contactar"
   },
   "pages": {
     "projects": {

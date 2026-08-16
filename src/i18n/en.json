@@ -22,9 +22,8 @@
     "heading": "Lucas Jardim",
     "intro": "Technology professional with a BSc in Computer Science and Business Management from ISCTE. I enjoy building web applications, solving complex problems, and developing technology-driven solutions that create real value.",
     "interests": "My interests span artificial intelligence, software engineering, automation, and digital transformation.",
-    "featuredProjects": "Selected projects",
-    "allProjects": "All projects",
-    "downloadCv": "Download CV"
+    "viewProjects": "View projects",
+    "getInTouch": "Get in touch"
   },
   "pages": {
     "projects": {

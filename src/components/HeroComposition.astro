@@ -1,0 +1,136 @@
+---
+// Composição visual do hero: três arcos concêntricos com sentidos e
+// velocidades alternados; cada arco leva o seu ponto satélite acoplado.
+// Oito linhas radiais rodam lentamente por baixo. Ponto central pulsante.
+// SVG puro + animação CSS. Respeita prefers-reduced-motion.
+---
+
+<div class="hero-composition" aria-hidden="true">
+  <svg
+    viewBox="0 0 400 400"
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-full w-full"
+  >
+    {/*
+      Camada de fundo: 8 linhas radiais a rodar muito lentamente (120s).
+      Ficam por baixo dos anéis para não competirem visualmente.
+    */}
+    <g
+      class="radials"
+      style="transform-origin: 200px 200px;"
+      stroke="var(--color-accent)"
+      stroke-width="0.5"
+      opacity="0.22"
+    >
+      <line x1="200" y1="200" x2="200" y2="30" />
+      <line x1="200" y1="200" x2="370" y2="200" />
+      <line x1="200" y1="200" x2="200" y2="370" />
+      <line x1="200" y1="200" x2="30" y2="200" />
+      <line x1="200" y1="200" x2="320" y2="80" />
+      <line x1="200" y1="200" x2="320" y2="320" />
+      <line x1="200" y1="200" x2="80" y2="320" />
+      <line x1="200" y1="200" x2="80" y2="80" />
+    </g>
+
+    {/*
+      Anéis: cada grupo = arco + ponto satélite acoplado.
+      Sentidos alternados: exterior CCW, meio CW, interior CCW.
+      Velocidades primas para nunca sincronizarem.
+    */}
+
+    {/* Anel exterior — anti-horário, 89s */}
+    <g class="ring-outer" style="transform-origin: 200px 200px;">
+      <path
+        d="M 200 200 m -160 0 a 160 160 0 0 1 320 0"
+        fill="none"
+        stroke="var(--color-accent)"
+        stroke-width="1.2"
+        stroke-linecap="round"
+        opacity="0.85"
+      />
+      <circle cx="200" cy="40" r="4" fill="var(--color-accent)" />
+    </g>
+
+    {/* Anel meio — horário, 47s */}
+    <g class="ring-mid" style="transform-origin: 200px 200px;">
+      <path
+        d="M 200 200 m -115 0 a 115 115 0 0 0 230 0"
+        fill="none"
+        stroke="var(--color-accent)"
+        stroke-width="1"
+        stroke-linecap="round"
+        opacity="0.65"
+      />
+      <circle cx="200" cy="315" r="3.5" fill="var(--color-accent)" opacity="0.9" />
+    </g>
+
+    {/* Anel interior — anti-horário, 23s */}
+    <g class="ring-inner" style="transform-origin: 200px 200px;">
+      <path
+        d="M 200 200 m -70 0 a 70 70 0 0 1 140 0"
+        fill="none"
+        stroke="var(--color-accent)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        opacity="0.55"
+      />
+      <circle cx="200" cy="130" r="3" fill="var(--color-accent)" opacity="0.8" />
+    </g>
+
+    {/* Ponto central pulsante — âncora visual */}
+    <circle
+      cx="200"
+      cy="200"
+      r="5"
+      fill="var(--color-accent)"
+      class="pulse"
+    />
+  </svg>
+</div>
+
+<style>
+  .hero-composition {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 460px;
+  }
+
+  @keyframes rotate-cw {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes rotate-ccw {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1;    transform: scale(1); }
+    50%      { opacity: 0.55; transform: scale(1.35); }
+  }
+
+  /* Anéis: sentidos alternados, velocidades primas */
+  .ring-outer { animation: rotate-ccw 89s linear infinite; }
+  .ring-mid   { animation: rotate-cw  47s linear infinite; }
+  .ring-inner { animation: rotate-ccw 23s linear infinite; }
+
+  /* Radiais — rotação muito lenta, sentido horário */
+  .radials { animation: rotate-cw 120s linear infinite; }
+
+  /* Pulsação do ponto central */
+  .pulse {
+    animation: pulse 4s ease-in-out infinite;
+    transform-origin: 200px 200px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring-outer,
+    .ring-mid,
+    .ring-inner,
+    .radials,
+    .pulse {
+      animation: none;
+    }
+  }
+</style>

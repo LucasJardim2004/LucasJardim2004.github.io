@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import { getCollection } from 'astro:content';
+import HeroComposition from '../../components/HeroComposition.astro';
 import { languages, t, isLang, localizedPath, type Lang } from '../../i18n/utils';
 
 export function getStaticPaths() {
@@ -10,13 +9,6 @@ export function getStaticPaths() {
 
 const rawLang = Astro.params.lang;
 const lang: Lang = isLang(rawLang) ? rawLang : 'en';
-
-// Projetos em destaque — puxados automaticamente do campo featured: true.
-const featuredProjects = (
-  await getCollection('projects', ({ id, data }) =>
-    id.startsWith(`${lang}/`) && data.featured && !data.draft
-  )
-).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout
@@ -24,71 +16,46 @@ const featuredProjects = (
   title="Lucas Jardim — Tech Analyst & Software Engineer"
   description="Personal site and portfolio of Lucas Jardim, Tech Analyst at Deloitte and BSc in Computer Science and Business Management."
 >
-  {/* Hero */}
-  <section class="pb-20 pt-4" aria-label="Introduction">
-    <p class="mb-4 font-mono text-sm text-accent">
-      {t(lang, 'home.role')}
-    </p>
+  {/* Hero visual — duas colunas em desktop, empilhado em mobile */}
+  <section
+    class="grid min-h-[70vh] items-center gap-12 py-8 md:grid-cols-[1.1fr,1fr] md:gap-16 md:py-16"
+    aria-label="Introduction"
+  >
+    {/* Coluna esquerda: texto */}
+    <div>
+      <p class="mb-6 font-mono text-xs uppercase tracking-wider text-accent">
+        {t(lang, 'home.role')}
+      </p>
 
-    <h1
-      class="mb-6 font-serif text-5xl font-medium leading-tight tracking-tight text-content sm:text-6xl"
-    >
-      {t(lang, 'home.heading')}
-    </h1>
-
-    <p class="mb-4 max-w-prose text-lg leading-relaxed text-content-secondary">
-      {t(lang, 'home.intro')}
-    </p>
-
-    <p class="mb-10 max-w-prose text-base leading-relaxed text-content-muted">
-      {t(lang, 'home.interests')}
-    </p>
-
-    <div class="flex flex-wrap gap-3">
-      <a
-        href={localizedPath(lang, 'projects')}
-        class="rounded-control bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover"
+      <h1
+        class="mb-6 font-serif text-6xl font-medium leading-[0.95] tracking-tight text-content sm:text-7xl md:text-[5.5rem]"
       >
-        {t(lang, 'home.featuredProjects')}
-      </a>
-      <a
-        href="/cv/lucas-jardim-cv.pdf"
-        class="rounded-control border border-border px-5 py-2.5 text-sm font-medium text-content-secondary transition hover:border-content hover:text-content"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t(lang, 'home.downloadCv')}
-      </a>
+        Lucas<br />Jardim
+      </h1>
+
+      <p class="mb-10 max-w-md text-lg leading-relaxed text-content-secondary">
+        {t(lang, 'home.intro')}
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={localizedPath(lang, 'projects')}
+          class="rounded-control bg-accent px-5 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover"
+        >
+          {t(lang, 'home.viewProjects')}
+        </a>
+        <a
+          href={localizedPath(lang, 'contact')}
+          class="rounded-control border border-border px-5 py-2.5 text-sm font-medium text-content-secondary transition hover:border-content hover:text-content"
+        >
+          {t(lang, 'home.getInTouch')}
+        </a>
+      </div>
+    </div>
+
+    {/* Coluna direita: composição visual animada */}
+    <div class="flex items-center justify-center">
+      <HeroComposition />
     </div>
   </section>
-
-  {/* Projetos em destaque */}
-  {
-    featuredProjects.length > 0 && (
-      <section aria-labelledby="featured-heading">
-        <div class="mb-8 flex items-baseline justify-between gap-4">
-          <h2
-            id="featured-heading"
-            class="font-serif text-2xl font-medium text-content"
-          >
-            {t(lang, 'home.featuredProjects')}
-          </h2>
-          <a
-            href={localizedPath(lang, 'projects')}
-            class="text-sm text-accent transition hover:text-accent-hover"
-          >
-            {t(lang, 'home.allProjects')} →
-          </a>
-        </div>
-
-        <ul class="grid gap-8 sm:grid-cols-2" role="list">
-          {featuredProjects.map((project) => (
-            <li>
-              <ProjectCard project={project} lang={lang} />
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
 </BaseLayout>

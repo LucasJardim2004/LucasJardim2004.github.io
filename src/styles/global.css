@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens de cor do design system. */
 @layer base {
   :root {
     --color-bg: #fbfaf7;
@@ -43,27 +42,26 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Foco visível — acessibilidade AA */
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 3px;
   }
 
-  /* Alvos de toque mínimos — 44px para mobile */
+  /* Alvos de toque mínimos — 44px em mobile. Centra conteúdo em ambos os eixos. */
   a, button {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
   }
 
-  /* Exceções: inline links no corpo de texto não precisam de 44px */
+  /* Exceções: links inline em prosa não precisam de 44px nem de flex. */
   p a, li a, .prose a {
     min-height: unset;
     display: inline;
   }
 
-  /* Respeita prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -73,7 +71,6 @@
     }
   }
 
-  /* Seleção de texto com cor de acento */
   ::selection {
     background-color: var(--color-accent-soft);
     color: var(--color-text);
